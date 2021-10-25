@@ -1,7 +1,9 @@
 import client from "../../client";
 import bcrypt from "bcrypt";
 
-export default {
+import { Resolvers } from "../types";
+
+const resolvers: Resolvers = {
   Mutation: {
     //계정 생성
     createAccount: async (
@@ -42,3 +44,5 @@ export default {
     },
   },
 };
+
+export default resolvers;

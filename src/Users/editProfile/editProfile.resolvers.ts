@@ -50,9 +50,13 @@ const resolverFn = async (
   }
 };
 
-export default {
+import { Resolvers } from "../types";
+
+const resolvers: Resolvers = {
   Mutation: {
     editProfile: protectedResolver(resolverFn),
   },
   Upload: GraphQLUpload,
 };
+
+export default resolvers;

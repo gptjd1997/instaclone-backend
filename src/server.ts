@@ -6,7 +6,8 @@ import logger from "morgan";
 import { graphqlUploadExpress } from "graphql-upload";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { resolvers, typeDefs } from "./schema";
-import { getUser, protectResolver } from "./Users/users.utils";
+import { getUser, protectedResolver } from "./Users/users.utils";
+import client from "./client";
 
 const PORT = process.env.PORT;
 const startServer = async () => {
@@ -16,7 +17,8 @@ const startServer = async () => {
     context: async ({ req }) => {
       return {
         loggedInUser: await getUser(req.headers.token),
-        protectResolver,
+        client,
+        protectedResolver,
       };
     },
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
@@ -30,8 +32,9 @@ const startServer = async () => {
   app.use("/static", express.static("uploads"));
   apollo.applyMiddleware({ app });
 
-  await new Promise((func) => app.listen({ port: PORT }, func));
-  console.log(`🎶Server is running on http://localhost:${PORT}/graphql`);
+  app.listen({ port: PORT }, () => {
+    console.log(`🎶Server is running on http://localhost:${PORT}/graphql`);
+  });
 };
 
 startServer();

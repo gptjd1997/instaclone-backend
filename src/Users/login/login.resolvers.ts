@@ -2,7 +2,9 @@ import client from "../../client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export default {
+import { Resolvers } from "../types";
+
+const resolvers: Resolvers = {
   Mutation: {
     //로그인
     login: async (_, { username, password }) => {
@@ -38,3 +40,5 @@ export default {
     },
   },
 };
+
+export default resolvers;
