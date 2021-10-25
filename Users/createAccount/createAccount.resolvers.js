@@ -6,9 +6,10 @@ export default {
     //계정 생성
     createAccount: async (
       _,
-      { firstName, lastName, username, email, password }
+      { firstName, lastName, username, email, password, avatar }
     ) => {
       try {
+        let avatarUrl = null;
         // username OR email 이 이미 DB에 존재하는지 확인
         const existingUser = await client.user.findFirst({
           where: { OR: [{ username }, { email }] },
@@ -23,15 +24,17 @@ export default {
         console.log(uglyPassword);
 
         //  유저 생성
-        const newUser = client.user.create({
+        await client.user.create({
           data: {
             username,
             email,
             firstName,
             lastName,
             password: uglyPassword,
+            ...(avatarUrl && { avatar: avatarUrl }),
           },
         });
+        console.log(username);
         return { ok: true };
       } catch (e) {
         return { ok: false, error: e };
