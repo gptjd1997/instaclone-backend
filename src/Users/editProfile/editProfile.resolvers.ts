@@ -1,8 +1,9 @@
 import client from "../../client";
-import { createWriteStream } from "fs";
 import bcrypt from "bcrypt";
 import { protectedResolver } from "../users.utils";
 import { GraphQLUpload } from "graphql-upload";
+import { Resolvers } from "../types";
+import { uploadToS3 } from "../../shared/shared.utils";
 
 console.log(process.cwd());
 
@@ -14,15 +15,11 @@ const resolverFn = async (
   //아바타 변경요청이 있을 시
   let avatarUrl = null;
   if (avatar) {
-    const { filename, createReadStream } = await avatar;
-    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
-    const readStream = createReadStream();
-    const writeStream = createWriteStream(
-      process.cwd() + "/uploads/" + newFilename
-    );
-    readStream.pipe(writeStream);
-
-    avatarUrl = `http://localhost:4000/static/${newFilename}`;
+    avatarUrl = await uploadToS3({
+      file: avatar,
+      loggedInUser,
+      folderName: "avatars",
+    });
   }
 
   let uglyPassword = null;
@@ -49,8 +46,6 @@ const resolverFn = async (
     return { ok: false, error: "프로필을 업데이트할 수 없습니다." };
   }
 };
-
-import { Resolvers } from "../types";
 
 const resolvers: Resolvers = {
   Mutation: {

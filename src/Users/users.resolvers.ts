@@ -1,3 +1,4 @@
+import { PrismaClient } from ".prisma/client";
 import client from "../client";
 import { protectedResolver } from "./users.utils";
 
@@ -20,5 +21,11 @@ export default {
       console.log(exists);
       return Boolean(exists);
     }),
+    photos: ({ id }, { page }) =>
+      client.photo.findMany({
+        where: { userId: id },
+        skip: 18 * (page - 1),
+        take: 18,
+      }),
   },
 };

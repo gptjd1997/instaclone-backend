@@ -17,6 +17,7 @@ export default gql`
     totalFollowers: Int!
     isMe: Boolean!
     isFollowing: Boolean!
+    photos(page: Int!): [Photo]
   }
 `;
 

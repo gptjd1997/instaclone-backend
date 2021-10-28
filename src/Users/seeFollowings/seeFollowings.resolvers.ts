@@ -19,7 +19,7 @@ const resolvers: Resolvers = {
         .findUnique({ where: { username } })
         .following({
           take: 5,
-          skip: 1,
+          skip: lastId ? 1 : 0,
           ...(lastId && { cursor: { id: lastId } }),
         });
 
