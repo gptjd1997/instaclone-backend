@@ -7,6 +7,8 @@ export default {
       client.hashtag.findMany({ where: { photos: { some: { id } } } }),
     likes: ({ id }) => client.like.count({ where: { photoId: id } }),
     comments: ({ id }) => client.comment.count({ where: { photoId: id } }),
+
+    //loggedInUser.id이 존재할시 userId === loggedInUser.id
     isMine: ({ userId }, _, { loggedInUser }) => userId === loggedInUser?.id,
   },
 

@@ -24,8 +24,8 @@ export default {
     photos: ({ id }, { page }) =>
       client.photo.findMany({
         where: { userId: id },
-        skip: 18 * (page - 1),
-        take: 18,
+        skip: 9 * (page - 1),
+        take: 9,
       }),
   },
 };

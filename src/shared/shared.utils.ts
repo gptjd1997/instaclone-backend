@@ -23,7 +23,7 @@ export const uploadToS3 = async ({ file, loggedInUser, folderName }) => {
       Body: readStream, // 스트림 or ~~
     })
     .promise();
-  return Location;
+  return Location; //파일 업로드 주소 반환
 
   // const { filename, createReadStream } = await file;
   // const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;

@@ -15,10 +15,11 @@ const startServer = async () => {
     resolvers,
     typeDefs,
     context: async ({ req }) => {
+      // context로 client와 현재 로그인유저가 존재한다면 유저 정보를 가져옴
       return {
         loggedInUser: await getUser(req.headers.token),
         client,
-        protectedResolver,
+        //protectedResolver,
       };
     },
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
@@ -27,9 +28,10 @@ const startServer = async () => {
   await apollo.start();
 
   const app = express();
+
+  //graphql 업로드 기능 사용시 필요
   app.use(graphqlUploadExpress());
   app.use(logger("tiny"));
-  app.use("/static", express.static("uploads"));
   apollo.applyMiddleware({ app });
 
   app.listen({ port: PORT }, () => {
